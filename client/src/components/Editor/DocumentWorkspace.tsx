@@ -12,6 +12,7 @@ import { TimeTravelScrubber } from '../TimeTravel/TimeTravelScrubber.js';
 import { ExecutableRunbook } from '../Runbook/ExecutableRunbook.js';
 import { AiTeammateModal } from '../AI/AiTeammateModal.js';
 import { useAuth } from '../../context/AuthContext.js';
+import { getBackendConfig } from '../../config/api.js';
 import type { DocumentItem } from '../../types/index.js';
 
 export function DocumentWorkspace() {
@@ -31,7 +32,7 @@ export function DocumentWorkspace() {
   const [isTimeTravelOpen, setIsTimeTravelOpen] = useState(false);
   const [editorInstance, setEditorInstance] = useState<any>(null);
 
-  const API_HOST = window.location.hostname === 'localhost' ? 'http://localhost:1234' : '';
+  const API_HOST = getBackendConfig().apiUrl;
 
   // Fetch document metadata & title from server
   useEffect(() => {

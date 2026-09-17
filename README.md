@@ -119,3 +119,57 @@ This automated test:
 3. Exchanges state vectors (`Sync Step 1`) and applies updates (`Sync Step 2`).
 4. Verifies 100% mathematical state convergence and character-level interleaving without data loss.
 5. Verifies state compaction and snapshot encoding.
+
+---
+
+## 🌐 Production Deployment Guide (Vercel + Render / Railway)
+
+Real-time collaborative applications require **two runtime environments**:
+1. **Frontend (Knit Client)** on **Vercel** (Global Edge CDN, instantaneous page loads, SPA routing).
+2. **Backend (WebSocket Sync Hub)** on **Render** or **Railway** (free persistent container supporting persistent duplex `wss://` connections).
+
+> ℹ️ **Why split frontend & backend?** Vercel Serverless and Edge functions are stateless request/response runners that terminate immediately after returning an HTTP response. They **do not support persistent WebSockets (`ws://`/`wss://`)**. Running the backend on Render/Railway provides a free, perpetual WebSocket server that connects peers across the world.
+
+### Step 1: Deploy Backend WebSocket Server (Render.com - 100% Free)
+1. Push this repository to your GitHub account:
+   ```bash
+   git add .
+   git commit -m "feat: complete Knit collaborative editor"
+   git push origin main
+   ```
+2. Go to [Render.com](https://render.com) and click **New +** → **Web Service**.
+3. Select your GitHub repository.
+4. Configure the service:
+   - **Name**: `knit-server`
+   - **Root Directory**: `server`
+   - **Runtime**: `Node`
+   - **Build Command**: `npm install && npm run build`
+   - **Start Command**: `npm start`
+   - **Instance Type**: `Free`
+5. Click **Deploy Web Service**.
+6. Once deployed, copy your Render URL (e.g., `https://knit-server.onrender.com`).
+
+---
+
+### Step 2: Deploy Frontend to Vercel
+1. Go to [Vercel.com](https://vercel.com) and click **Add New Project**.
+2. Import your GitHub repository.
+3. In the project configuration:
+   - **Framework Preset**: `Vite`
+   - **Root Directory**: Click **Edit** and choose `client` (or leave root since `vercel.json` is configured).
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+4. Expand **Environment Variables** and add:
+   - `VITE_WS_URL`: `wss://knit-server.onrender.com` (replace with your Render URL, using `wss://`)
+   - `VITE_API_URL`: `https://knit-server.onrender.com` (replace with your Render URL, using `https://`)
+   - *(Optional)* `VITE_CLERK_PUBLISHABLE_KEY`: *(Only if you want external Clerk SSO; otherwise Knit's built-in 1-click verified personas work automatically!)*
+5. Click **Deploy**! 🚀
+
+---
+
+### Step 3: Test Multi-User Production Collaboration
+1. Open your live Vercel URL (e.g., `https://knit-collab.vercel.app`).
+2. Click **"New Document"** or join an existing document.
+3. Click the **"Invite"** button in the header, copy the generated invite link (`https://knit-collab.vercel.app/invite/<code-or-id>`).
+4. Send the link to a teammate, or open it in an Incognito window / another device.
+5. Watch keystrokes, remote carets, selection highlights, and execution runbooks sync instantaneously over secure WebSockets!

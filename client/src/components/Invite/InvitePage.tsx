@@ -5,6 +5,7 @@ import { BreathingWaveBackground } from '../Background/BreathingWaveBackground.j
 import { FileText, Users, ArrowRight, ShieldCheck, Sparkles, Loader2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import type { DocumentItem } from '../../types/index.js';
+import { getBackendConfig } from '../../config/api.js';
 
 export const InvitePage: React.FC = () => {
   const { code } = useParams<{ code: string }>();
@@ -17,7 +18,7 @@ export const InvitePage: React.FC = () => {
   const [joining, setJoining] = useState(false);
   const [customName, setCustomName] = useState('');
 
-  const API_HOST = window.location.hostname === 'localhost' ? 'http://localhost:1234' : '';
+  const API_HOST = getBackendConfig().apiUrl;
 
   useEffect(() => {
     const fetchInvite = async () => {

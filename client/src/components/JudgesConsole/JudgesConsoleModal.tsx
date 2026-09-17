@@ -12,6 +12,7 @@ import {
 import type * as Y from 'yjs';
 import type { TransactionRecord } from '../../types/index.js';
 import { CrdtInspector } from '../../utils/crdtInspector.js';
+import { getBackendConfig } from '../../config/api.js';
 
 interface JudgesConsoleModalProps {
   isOpen: boolean;
@@ -53,7 +54,8 @@ export const JudgesConsoleModal: React.FC<JudgesConsoleModalProps> = ({
   const handleTriggerCompaction = async () => {
     setIsCompacting(true);
     try {
-      const res = await fetch(`http://${window.location.hostname}:1234/api/docs/${docName}/compact`, {
+      const { apiUrl } = getBackendConfig();
+      const res = await fetch(`${apiUrl}/api/docs/${docName}/compact`, {
         method: 'POST',
       });
       const data = await res.json();

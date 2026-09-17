@@ -18,6 +18,7 @@ import {
   X,
 } from 'lucide-react';
 import type { DocumentItem } from '../../types/index.js';
+import { getBackendConfig } from '../../config/api.js';
 
 export const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ export const Dashboard: React.FC = () => {
   // Join by code
   const [joinCode, setJoinCode] = useState('');
 
-  const API_HOST = window.location.hostname === 'localhost' ? 'http://localhost:1234' : '';
+  const API_HOST = getBackendConfig().apiUrl;
 
   const fetchDocs = async () => {
     try {

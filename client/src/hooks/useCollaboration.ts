@@ -8,6 +8,7 @@ import type { UserProfile, ConnectionStatus, TransactionRecord, TimelineSnapshot
 import { getRandomColor, getRandomName } from '../utils/colors.js';
 import { AwarenessThrottler } from '../utils/awarenessThrottler.js';
 import { CrdtInspector } from '../utils/crdtInspector.js';
+import { getBackendConfig } from '../config/api.js';
 
 const MESSAGE_PING = 99;
 
@@ -64,9 +65,7 @@ export function useCollaboration(docName = 'default') {
     });
 
     // 2. Determine WebSocket Server URL
-    const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsHost = window.location.hostname;
-    const wsUrl = `${wsProtocol}//${wsHost}:1234`;
+    const { wsUrl } = getBackendConfig();
 
     const wsProvider = new WebsocketProvider(wsUrl, docName, activeYdoc, {
       connect: true,
