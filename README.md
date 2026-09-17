@@ -1,4 +1,4 @@
-# ⚡ SyncScript — Hackathon-Winning Real-Time Collaborative CRDT Editor
+# ⚡ SyncScript — Real-Time Collaborative CRDT Editor
 
 > **Built for Distributed Systems Evaluation**: Zero data loss during network partitions, sub-millisecond cursor synchronization, and absolute state consistency using Conflict-Free Replicated Data Types (CRDTs).
 
@@ -34,14 +34,14 @@ SyncScript is an offline-first, real-time collaborative rich-text editor designe
 
 ---
 
-## 🌟 Hackathon "Wow Factor" Features
+## 🌟 Key Features
 
 ### 1. The Chaos Toggle (Network Partition Simulator)
-- **What it does**: A prominent header switch that simulates a severe network partition by severing the WebSocket connection.
+- **What it does**: A header switch that simulates a severe network partition by severing the WebSocket connection.
 - **How to test**:
-  1. Click **ONLINE: SYNCED** to sever the network connection (`CHAOS ACTIVE: PARTITIONED`).
+  1. Click **`ONLINE: SYNCED`** to sever the network connection (`CHAOS ACTIVE: PARTITIONED`).
   2. Type new paragraphs, delete text, or format content offline. Keystrokes are instantly persisted to **IndexedDB**.
-  3. Click **CHAOS ACTIVE: PARTITIONED** to heal the partition.
+  3. Click **`CHAOS ACTIVE: PARTITIONED`** to heal the partition.
   4. Watch the WebSocket reconnect, exchange vector clocks (`Sync Step 1`), merge concurrent operations (`Sync Step 2`), and trigger a celebratory confetti merge notification!
   5. **Split-Screen Demo**: Click the **"Open Peer"** button in the header to open a second tab side-by-side. Sever one tab, type concurrently in both tabs, heal the partition, and witness character-level interleaving without Last-Write-Wins (LWW) data loss.
 
@@ -63,11 +63,11 @@ SyncScript is an offline-first, real-time collaborative rich-text editor designe
 
 ---
 
-## 🛠️ Tech Stack & Distributed Innovations
+## 🛠️ Tech Stack & Architecture
 
-| Layer | Technology | Distributed Systems Role |
+| Layer | Technology | Role |
 | :--- | :--- | :--- |
-| **Frontend Framework** | React 18 + TypeScript + Vite | Ultra-fast rendering and modular component architecture |
+| **Frontend Framework** | React 18 + TypeScript + Vite | Ultra-fast rendering and component architecture |
 | **Rich-Text Engine** | TipTap v2 + ProseMirror | Headless collaborative document representation |
 | **CRDT Engine** | `yjs` (v13) | Mathematical conflict-free replicated data types |
 | **Local Persistence** | `y-indexeddb` | Instant render from local disk before network handshake |
@@ -84,13 +84,17 @@ SyncScript is an offline-first, real-time collaborative rich-text editor designe
 - Node.js (v18+)
 - npm (v9+)
 
-### Installation & Run
+### Installation & Setup
 
 ```bash
-# 1. Clone or navigate to the repository
-cd /path/to/documentEditorCollaborative
+# 1. Clone the repository
+git clone https://github.com/katabathunilohith/Knit.git
+cd Knit
 
-# 2. Run both Backend Server & Frontend Client concurrently:
+# 2. Install dependencies for root, client, and server
+npm run install:all
+
+# 3. Run both Backend Server & Frontend Client concurrently:
 npm run dev
 ```
 
