@@ -5,8 +5,9 @@ import Collaboration from '@tiptap/extension-collaboration';
 import CollaborationCursor from '@tiptap/extension-collaboration-cursor';
 import type * as Y from 'yjs';
 import type { WebsocketProvider } from 'y-websocket';
-import type { UserProfile } from '../../types/index.js';
+import type { UserProfile, TimelineSnapshot } from '../../types/index.js';
 import { Toolbar } from './Toolbar.js';
+import { History, RotateCcw } from 'lucide-react';
 import './editor.css';
 
 interface EditorProps {
@@ -14,6 +15,9 @@ interface EditorProps {
   provider: WebsocketProvider | null;
   currentUser: UserProfile;
   isIndexedDbSynced: boolean;
+  onEditorReady?: (editor: any) => void;
+  timeTravelSnapshot?: TimelineSnapshot | null;
+  onExitTimeTravel?: () => void;
 }
 
 export const Editor: React.FC<EditorProps> = ({
@@ -21,6 +25,9 @@ export const Editor: React.FC<EditorProps> = ({
   provider,
   currentUser,
   isIndexedDbSynced,
+  onEditorReady,
+  timeTravelSnapshot,
+  onExitTimeTravel,
 }) => {
   const editor = useEditor(
     {
@@ -84,8 +91,59 @@ export const Editor: React.FC<EditorProps> = ({
     }
   }, [editor, provider, currentUser.name, currentUser.color]);
 
+  useEffect(() => {
+    if (editor && onEditorReady) {
+      onEditorReady(editor);
+    }
+  }, [editor, onEditorReady]);
+
   return (
     <div className="document-sheet">
+      {/* Time-Travel Inspection Mode Banner */}
+      {timeTravelSnapshot && (
+        <div
+          style={{
+            padding: '10px 16px',
+            borderRadius: '10px',
+            background: 'rgba(245, 158, 11, 0.15)',
+            border: '1px solid rgba(245, 158, 11, 0.4)',
+            color: '#fef3c7',
+            marginBottom: '1rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            fontSize: '0.82rem',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <History size={16} color="#f59e0b" />
+            <span>
+              <strong>Time-Travel Replay:</strong> Step {timeTravelSnapshot.step} • {timeTravelSnapshot.summary}
+            </span>
+          </div>
+          {onExitTimeTravel && (
+            <button
+              onClick={onExitTimeTravel}
+              style={{
+                background: 'rgba(245, 158, 11, 0.25)',
+                border: '1px solid rgba(245, 158, 11, 0.5)',
+                color: '#fcd34d',
+                padding: '4px 10px',
+                borderRadius: '6px',
+                fontSize: '0.75rem',
+                cursor: 'pointer',
+                fontWeight: 600,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
+              }}
+            >
+              <RotateCcw size={12} />
+              <span>Exit Replay</span>
+            </button>
+          )}
+        </div>
+      )}
       {/* Local-First Instant Indicator */}
       <div
         style={{

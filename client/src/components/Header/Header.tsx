@@ -5,6 +5,7 @@ import {
   ExternalLink,
   Share2,
   ArrowLeft,
+  Bot,
 } from 'lucide-react';
 import type { UserProfile, ConnectionStatus } from '../../types/index.js';
 import { ChaosToggle } from './ChaosToggle.js';
@@ -24,6 +25,7 @@ interface HeaderProps {
   onUpdateDocTitle: (title: string) => void;
   onOpenInvite?: () => void;
   onNavigateDashboard?: () => void;
+  onOpenAiTeammate?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -38,6 +40,7 @@ export const Header: React.FC<HeaderProps> = ({
   onUpdateDocTitle,
   onOpenInvite,
   onNavigateDashboard,
+  onOpenAiTeammate,
 }) => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -223,6 +226,27 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <Share2 size={14} color="#ec4899" />
             <span>Share</span>
+          </button>
+        )}
+
+        {/* AI Teammate Modal Trigger */}
+        {onOpenAiTeammate && (
+          <button
+            type="button"
+            onClick={onOpenAiTeammate}
+            className="btn-ghost"
+            style={{
+              fontSize: '0.8rem',
+              padding: '6px 12px',
+              border: '1px solid rgba(6, 182, 212, 0.45)',
+              color: '#67e8f9',
+              borderRadius: '8px',
+              background: 'rgba(6, 182, 212, 0.1)',
+            }}
+            title="Summon AI Teammate to Live Type into Document"
+          >
+            <Bot size={14} color="#06b6d4" />
+            <span>AI Teammate</span>
           </button>
         )}
 

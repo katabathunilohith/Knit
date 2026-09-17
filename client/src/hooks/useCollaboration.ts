@@ -4,7 +4,7 @@ import { WebsocketProvider } from 'y-websocket';
 import { IndexeddbPersistence } from 'y-indexeddb';
 import * as decoding from 'lib0/decoding';
 import * as encoding from 'lib0/encoding';
-import type { UserProfile, ConnectionStatus, TransactionRecord } from '../types/index.js';
+import type { UserProfile, ConnectionStatus, TransactionRecord, TimelineSnapshot } from '../types/index.js';
 import { getRandomColor, getRandomName } from '../utils/colors.js';
 import { AwarenessThrottler } from '../utils/awarenessThrottler.js';
 import { CrdtInspector } from '../utils/crdtInspector.js';
@@ -39,6 +39,8 @@ export function useCollaboration(docName = 'default') {
   const [structCount, setStructCount] = useState(0);
   const [totalKeystrokes, setTotalKeystrokes] = useState(0);
   const [transactions, setTransactions] = useState<TransactionRecord[]>([]);
+  const [timelineSnapshots, setTimelineSnapshots] = useState<TimelineSnapshot[]>([]);
+  const [timeTravelStep, setTimeTravelStep] = useState<number | null>(null);
 
   const [ydoc, setYdoc] = useState<Y.Doc | null>(null);
   const [provider, setProvider] = useState<WebsocketProvider | null>(null);
@@ -133,6 +135,33 @@ export function useCollaboration(docName = 'default') {
       };
 
       setTransactions((prev) => [newRecord, ...prev.slice(0, 49)]);
+
+      // Record Time-Travel Mutation Snapshot
+      let textSnippet = '';
+      try {
+        const yFragment = activeYdoc.getXmlFragment('default');
+        textSnippet = yFragment.toJSON() || '';
+        if (typeof textSnippet !== 'string') {
+          textSnippet = JSON.stringify(textSnippet);
+        }
+      } catch {
+        textSnippet = '';
+      }
+
+      setTimelineSnapshots((prev) => {
+        const step = prev.length + 1;
+        const snapshot: TimelineSnapshot = {
+          id: 'step-' + step,
+          step,
+          timestamp: Date.now(),
+          origin: originStr,
+          summary: `${originStr === 'local-keystroke' ? 'Local edit' : originStr === 'remote-peer' ? 'Peer update' : 'Sync'} (+${byteDelta}B)`,
+          textSnippet,
+          docSizeBytes: size,
+          structCount: count,
+        };
+        return [...prev.slice(-199), snapshot];
+      });
     });
 
     // Setup High-Precision Latency Ping
@@ -225,6 +254,9 @@ export function useCollaboration(docName = 'default') {
     structCount,
     totalKeystrokes,
     transactions,
+    timelineSnapshots,
+    timeTravelStep,
+    setTimeTravelStep,
     currentUser,
     updateUserProfile,
     simulatePartition,

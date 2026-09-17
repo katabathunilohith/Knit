@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth, VERIFIED_PERSONAS } from '../../context/AuthContext.js';
-import { X, CheckCircle2, ShieldCheck, UserPlus, Sparkles } from 'lucide-react';
+import { X, CheckCircle2, ShieldCheck, UserPlus, Sparkles, LogOut } from 'lucide-react';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -8,7 +8,7 @@ interface AuthModalProps {
 }
 
 export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
-  const { user, loginAsPersona, loginAsCustom } = useAuth();
+  const { user, loginAsPersona, loginAsCustom, logout } = useAuth();
   const [customName, setCustomName] = useState('');
   const [customEmail, setCustomEmail] = useState('');
 
@@ -105,6 +105,35 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                 );
               })}
             </div>
+
+            {user && (
+              <button
+                onClick={() => {
+                  logout();
+                  onClose();
+                }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  width: '100%',
+                  padding: '8px',
+                  borderRadius: '10px',
+                  background: 'rgba(244, 63, 94, 0.1)',
+                  border: '1px solid rgba(244, 63, 94, 0.25)',
+                  color: '#fb7185',
+                  fontSize: '0.8rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  marginTop: '10px',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <LogOut size={14} />
+                <span>Sign Out Current Session</span>
+              </button>
+            )}
           </div>
 
           <div style={{ position: 'relative', textAlign: 'center' }}>

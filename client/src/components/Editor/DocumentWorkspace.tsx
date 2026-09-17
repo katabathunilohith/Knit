@@ -8,6 +8,9 @@ import { JudgesConsoleModal } from '../JudgesConsole/JudgesConsoleModal.js';
 import { BreathingWaveBackground } from '../Background/BreathingWaveBackground.js';
 import { MascotStage } from '../Mascot/MascotStage.js';
 import { InviteModal } from '../Invite/InviteModal.js';
+import { TimeTravelScrubber } from '../TimeTravel/TimeTravelScrubber.js';
+import { ExecutableRunbook } from '../Runbook/ExecutableRunbook.js';
+import { AiTeammateModal } from '../AI/AiTeammateModal.js';
 import { useAuth } from '../../context/AuthContext.js';
 import type { DocumentItem } from '../../types/index.js';
 
@@ -24,6 +27,9 @@ export function DocumentWorkspace() {
   const [docMeta, setDocMeta] = useState<DocumentItem | null>(null);
   const [isJudgesConsoleOpen, setIsJudgesConsoleOpen] = useState(false);
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+  const [isAiModalOpen, setIsAiModalOpen] = useState(false);
+  const [isTimeTravelOpen, setIsTimeTravelOpen] = useState(false);
+  const [editorInstance, setEditorInstance] = useState<any>(null);
 
   const API_HOST = window.location.hostname === 'localhost' ? 'http://localhost:1234' : '';
 
@@ -62,11 +68,16 @@ export function DocumentWorkspace() {
     structCount,
     totalKeystrokes,
     transactions,
+    timelineSnapshots,
+    timeTravelStep,
+    setTimeTravelStep,
     currentUser,
     updateUserProfile,
     simulatePartition,
     healPartition,
   } = useCollaboration(docName);
+
+  const activeSnapshot = timeTravelStep !== null ? (timelineSnapshots[timeTravelStep - 1] || timelineSnapshots[0]) : null;
 
   // Sync active auth user profile to Yjs awareness if available
   useEffect(() => {
@@ -81,6 +92,10 @@ export function DocumentWorkspace() {
       if ((e.metaKey || e.ctrlKey) && e.shiftKey && (e.key === 'D' || e.key === 'd')) {
         e.preventDefault();
         setIsJudgesConsoleOpen((prev) => !prev);
+      }
+      if ((e.metaKey || e.ctrlKey) && (e.key === 'J' || e.key === 'j')) {
+        e.preventDefault();
+        setIsAiModalOpen(true);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -121,6 +136,7 @@ export function DocumentWorkspace() {
         onUpdateDocTitle={handleUpdateTitle}
         onOpenInvite={() => setIsInviteModalOpen(true)}
         onNavigateDashboard={() => navigate('/')}
+        onOpenAiTeammate={() => setIsAiModalOpen(true)}
       />
 
       {/* Main Document Workspace */}
@@ -135,6 +151,9 @@ export function DocumentWorkspace() {
             provider={provider}
             currentUser={currentUser}
             isIndexedDbSynced={isIndexedDbSynced}
+            onEditorReady={setEditorInstance}
+            timeTravelSnapshot={activeSnapshot}
+            onExitTimeTravel={() => setTimeTravelStep(null)}
           />
         ) : (
           <div
@@ -150,6 +169,9 @@ export function DocumentWorkspace() {
             <span>Initializing CRDT Engine & IndexedDB Persistence...</span>
           </div>
         )}
+
+        {/* Executable Runbook & Interactive Sandbox */}
+        <ExecutableRunbook ydoc={ydoc} currentUser={currentUser} />
       </main>
 
       {/* Real-Time Performance Telemetry HUD */}
@@ -188,6 +210,23 @@ export function DocumentWorkspace() {
           ownerName: user?.name,
           ownerEmail: user?.email,
         }}
+      />
+
+      {/* CRDT Time-Travel Keystroke Scrubber */}
+      <TimeTravelScrubber
+        snapshots={timelineSnapshots}
+        currentStep={timeTravelStep}
+        onStepChange={setTimeTravelStep}
+        isOpen={isTimeTravelOpen}
+        onToggleOpen={() => setIsTimeTravelOpen(!isTimeTravelOpen)}
+      />
+
+      {/* AI Teammate Concurrent Generation Modal */}
+      <AiTeammateModal
+        isOpen={isAiModalOpen}
+        onClose={() => setIsAiModalOpen(false)}
+        editor={editorInstance}
+        provider={provider}
       />
     </div>
   );

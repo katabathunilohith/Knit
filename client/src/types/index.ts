@@ -71,3 +71,28 @@ export interface TransactionRecord {
   summary: string;
   lamportClock: number;
 }
+
+export interface TimelineSnapshot {
+  id: string;
+  step: number;
+  timestamp: number;
+  origin: string;
+  summary: string;
+  textSnippet: string;
+  fullContent?: string;
+  docSizeBytes: number;
+  structCount: number;
+}
+
+export interface RunbookBlock {
+  id: string;
+  title: string;
+  description: string;
+  code: string;
+  language: 'javascript' | 'typescript' | 'python';
+  lastRunAt?: number;
+  lastRunBy?: string;
+  output?: string;
+  error?: string;
+  durationMs?: number;
+}
