@@ -4,13 +4,15 @@ import { Header } from './components/Header/Header.js';
 import { Editor } from './components/Editor/Editor.js';
 import { TelemetryDashboard } from './components/Telemetry/TelemetryDashboard.js';
 import { JudgesConsoleModal } from './components/JudgesConsole/JudgesConsoleModal.js';
+import { BreathingWaveBackground } from './components/Background/BreathingWaveBackground.js';
+import { MascotStage } from './components/Mascot/MascotStage.js';
 
 export function App() {
-  // Extract room from URL query or default to 'hackathon-demo'
+  // Extract room from URL query or default to 'knit-demo'
   const searchParams = new URLSearchParams(window.location.search);
-  const docName = searchParams.get('room') || 'hackathon-demo';
+  const docName = searchParams.get('room') || 'knit-demo';
 
-  const [docTitle, setDocTitle] = useState('⚡ Distributed Systems Hackathon Pitch');
+  const [docTitle, setDocTitle] = useState('🧶 Untitled Knit Document');
   const [isJudgesConsoleOpen, setIsJudgesConsoleOpen] = useState(false);
 
   const {
@@ -45,6 +47,9 @@ export function App() {
 
   return (
     <div className="app-container">
+      {/* Animated Radial Wave Breathing Background */}
+      <BreathingWaveBackground />
+
       {/* Top Sticky Header */}
       <Header
         status={status}
@@ -60,6 +65,10 @@ export function App() {
 
       {/* Main Document Workspace */}
       <main className="editor-workspace">
+        {/* Animated Knitting Cat Mascot Stage */}
+        <MascotStage status={status} />
+
+        {/* Document Editor Sheet */}
         {ydoc && provider ? (
           <Editor
             ydoc={ydoc}
@@ -74,11 +83,11 @@ export function App() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#64748b',
-              minHeight: '400px',
+              color: '#94a3b8',
+              minHeight: '420px',
             }}
           >
-            <span>Initializing CRDT Engine & IndexedDB...</span>
+            <span>Initializing CRDT Engine & IndexedDB Persistence...</span>
           </div>
         )}
       </main>
@@ -96,7 +105,7 @@ export function App() {
         onOpenJudgesConsole={() => setIsJudgesConsoleOpen(true)}
       />
 
-      {/* Secret / Hidden Judge's Developer Console */}
+      {/* Judge's Developer Console */}
       <JudgesConsoleModal
         isOpen={isJudgesConsoleOpen}
         onClose={() => setIsJudgesConsoleOpen(false)}

@@ -30,14 +30,14 @@ export const Toolbar: React.FC<ToolbarProps> = ({ editor }) => {
         display: 'flex',
         alignItems: 'center',
         gap: '4px',
-        padding: '6px 10px',
-        background: 'rgba(17, 23, 34, 0.95)',
-        backdropFilter: 'blur(12px)',
-        border: '1px solid rgba(255, 255, 255, 0.08)',
+        padding: '6px 12px',
+        background: 'rgba(10, 14, 23, 0.92)',
+        backdropFilter: 'blur(16px)',
+        border: '1px solid rgba(255, 255, 255, 0.09)',
         borderRadius: '12px',
-        marginBottom: '1.5rem',
+        marginBottom: '1.75rem',
         flexWrap: 'wrap',
-        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.45)',
       }}
     >
       {/* Undo / Redo */}
@@ -188,15 +188,16 @@ export const Toolbar: React.FC<ToolbarProps> = ({ editor }) => {
 const separatorStyle: React.CSSProperties = {
   width: '1px',
   height: '20px',
-  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  backgroundColor: 'rgba(255, 255, 255, 0.12)',
   margin: '0 4px',
 };
 
 function getBtnStyle(isActive: boolean, disabled = false): React.CSSProperties {
   return {
-    background: isActive ? 'rgba(59, 130, 246, 0.2)' : 'transparent',
-    color: disabled ? '#475569' : isActive ? '#60a5fa' : '#94a3b8',
-    border: isActive ? '1px solid rgba(59, 130, 246, 0.4)' : '1px solid transparent',
+    background: isActive ? 'rgba(255, 42, 133, 0.22)' : 'transparent',
+    color: disabled ? '#475569' : isActive ? '#ff80b0' : '#94a3b8',
+    border: isActive ? '1px solid rgba(255, 42, 133, 0.45)' : '1px solid transparent',
+    boxShadow: isActive ? '0 0 10px rgba(255, 42, 133, 0.3)' : 'none',
     borderRadius: '6px',
     padding: '6px 8px',
     display: 'flex',

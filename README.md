@@ -1,12 +1,12 @@
-# ⚡ SyncScript — Real-Time Collaborative CRDT Editor
+# 🧶 Knit — Real-Time Collaborative CRDT Editor
 
-> **Built for Distributed Systems Evaluation**: Zero data loss during network partitions, sub-millisecond cursor synchronization, and absolute state consistency using Conflict-Free Replicated Data Types (CRDTs).
+> **Weaving Collaborative Thoughts with Zero Data Loss**: Built for distributed systems evaluation, featuring zero data loss during network partitions, sub-millisecond cursor synchronization, breathing radial wave background theme, and animated mascot.
 
 ---
 
 ## 🏆 Executive Summary & Architecture Highlights
 
-SyncScript is an offline-first, real-time collaborative rich-text editor designed to dominate mentor evaluation criteria. While traditional web applications rely on centralized servers and REST/RPC APIs (which fail during network partitions), SyncScript implements a **Local-First Distributed Model** where the browser is a fully self-contained distributed node.
+Knit is an offline-first, real-time collaborative rich-text editor designed for resilient distributed editing. While traditional web applications rely on centralized servers and REST/RPC APIs (which fail during network partitions), Knit implements a **Local-First Distributed Model** where the browser is a fully self-contained distributed node.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐

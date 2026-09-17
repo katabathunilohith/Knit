@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  FileText,
   Users,
   Terminal,
   ExternalLink,
@@ -8,6 +7,7 @@ import {
 import type { UserProfile, ConnectionStatus } from '../../types/index.js';
 import { ChaosToggle } from './ChaosToggle.js';
 import { UserProfileModal } from './UserProfileModal.js';
+import { KnitCat } from '../Mascot/KnitCat.js';
 import { getInitials } from '../../utils/colors.js';
 
 interface HeaderProps {
@@ -44,7 +44,7 @@ export const Header: React.FC<HeaderProps> = ({
       remotePeers.push({
         id: clientId,
         name: val.user.name,
-        color: val.user.color || '#3b82f6',
+        color: val.user.color || '#ff2a85',
       });
     }
   });
@@ -59,46 +59,59 @@ export const Header: React.FC<HeaderProps> = ({
 
   const handleOpenPeerWindow = () => {
     // Open a second tab to test multi-user real-time sync immediately
-    window.open(window.location.href, '_blank', 'width=900,height=800');
+    window.open(window.location.href, '_blank', 'width=950,height=850');
   };
 
   return (
     <header className="app-header">
       {/* Left: Brand & Document Title */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {/* Mini Animated Knit Cat Icon */}
           <div
             style={{
-              width: 34,
-              height: 34,
-              borderRadius: '8px',
-              background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)',
+              width: 40,
+              height: 40,
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, rgba(255, 42, 133, 0.25), rgba(139, 92, 246, 0.25))',
+              border: '1px solid rgba(255, 42, 133, 0.4)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 0 12px rgba(59, 130, 246, 0.4)',
+              boxShadow: '0 0 16px rgba(255, 42, 133, 0.35)',
+              overflow: 'hidden',
+              cursor: 'pointer',
             }}
+            title="Knit — Zero Data Loss Collaborative Rich-Text Engine"
           >
-            <FileText size={20} color="#ffffff" />
+            <div style={{ transform: 'scale(0.85) translate(3px, 2px)' }}>
+              <KnitCat size="sm" interactive={false} />
+            </div>
           </div>
+
           <div>
             <div
               style={{
-                fontSize: '0.95rem',
+                fontSize: '1.15rem',
                 fontWeight: 800,
-                letterSpacing: '-0.02em',
-                background: 'linear-gradient(135deg, #ffffff, #94a3b8)',
+                letterSpacing: '-0.03em',
+                background: 'linear-gradient(135deg, #ffffff 0%, #ff77b9 50%, #c084fc 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
               }}
             >
-              SyncScript CRDT
+              Knit
             </div>
-            <div style={{ fontSize: '0.7rem', color: '#64748b' }}>Zero-Loss Collaborative Engine</div>
+            <div style={{ fontSize: '0.68rem', color: '#94a3b8', fontWeight: 500, letterSpacing: '0.02em' }}>
+              Real-Time CRDT Weaving
+            </div>
           </div>
         </div>
 
-        <div style={{ width: 1, height: 24, backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
+        <div style={{ width: 1, height: 26, backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
 
         {/* Document Title Editable */}
         {isEditingTitle ? (
@@ -114,13 +127,14 @@ export const Header: React.FC<HeaderProps> = ({
               autoFocus
               style={{
                 background: '#0d121c',
-                border: '1px solid #3b82f6',
-                borderRadius: '6px',
+                border: '1px solid #ff2a85',
+                borderRadius: '8px',
                 color: '#ffffff',
-                padding: '4px 8px',
+                padding: '4px 10px',
                 fontSize: '0.9rem',
                 fontWeight: 600,
                 outline: 'none',
+                boxShadow: '0 0 12px rgba(255, 42, 133, 0.3)',
               }}
             />
           </form>
@@ -134,7 +148,16 @@ export const Header: React.FC<HeaderProps> = ({
               cursor: 'pointer',
               padding: '4px 8px',
               borderRadius: '6px',
-              transition: 'background 0.15s ease',
+              transition: 'all 0.15s ease',
+              border: '1px solid transparent',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+              e.currentTarget.style.borderColor = 'rgba(255, 42, 133, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.borderColor = 'transparent';
             }}
             title="Click to rename document"
           >
@@ -159,7 +182,12 @@ export const Header: React.FC<HeaderProps> = ({
           type="button"
           onClick={handleOpenPeerWindow}
           className="btn-ghost"
-          style={{ fontSize: '0.8rem', padding: '5px 10px' }}
+          style={{
+            fontSize: '0.8rem',
+            padding: '6px 12px',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            borderRadius: '8px',
+          }}
           title="Open a second collaborative peer window to test live synchronization"
         >
           <ExternalLink size={14} />
@@ -173,13 +201,15 @@ export const Header: React.FC<HeaderProps> = ({
           className="btn-ghost"
           style={{
             fontSize: '0.8rem',
-            padding: '5px 10px',
-            border: '1px solid rgba(139, 92, 246, 0.4)',
+            padding: '6px 12px',
+            border: '1px solid rgba(139, 92, 246, 0.45)',
             color: '#c4b5fd',
+            borderRadius: '8px',
+            background: 'rgba(139, 92, 246, 0.08)',
           }}
           title="Open Judge's Developer Console (Cmd+Shift+D)"
         >
-          <Terminal size={14} color="#a78bfa" />
+          <Terminal size={14} color="#c084fc" />
           <span>Judge's Console</span>
         </button>
 
@@ -189,8 +219,8 @@ export const Header: React.FC<HeaderProps> = ({
             <div
               key={peer.id}
               style={{
-                width: 30,
-                height: 30,
+                width: 32,
+                height: 32,
                 borderRadius: '50%',
                 backgroundColor: peer.color,
                 color: '#ffffff',
@@ -200,8 +230,8 @@ export const Header: React.FC<HeaderProps> = ({
                 fontSize: '0.75rem',
                 fontWeight: 700,
                 marginLeft: idx > 0 ? -8 : 0,
-                border: '2px solid #0a0d14',
-                boxShadow: `0 0 8px ${peer.color}`,
+                border: '2px solid #05060a',
+                boxShadow: `0 0 10px ${peer.color}`,
                 cursor: 'pointer',
               }}
               title={`Peer: ${peer.name}`}
@@ -216,7 +246,7 @@ export const Header: React.FC<HeaderProps> = ({
                 alignItems: 'center',
                 gap: '4px',
                 fontSize: '0.75rem',
-                color: '#64748b',
+                color: '#94a3b8',
                 padding: '4px 8px',
               }}
               title="No other peers connected. Click 'Open Peer' to launch another tab!"
@@ -231,19 +261,19 @@ export const Header: React.FC<HeaderProps> = ({
         <div
           onClick={() => setIsProfileModalOpen(true)}
           style={{
-            width: 32,
-            height: 32,
+            width: 34,
+            height: 34,
             borderRadius: '50%',
             backgroundColor: currentUser.color,
             color: '#ffffff',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '0.8rem',
+            fontSize: '0.85rem',
             fontWeight: 700,
             cursor: 'pointer',
             border: '2px solid #ffffff',
-            boxShadow: `0 0 10px ${currentUser.color}`,
+            boxShadow: `0 0 12px ${currentUser.color}`,
             transition: 'transform 0.15s ease',
           }}
           title={`Your Profile: ${currentUser.name} (Click to edit)`}

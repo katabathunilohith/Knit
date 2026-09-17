@@ -1,8 +1,8 @@
 {
-  "name": "collaborative-document-editor",
+  "name": "knit",
   "version": "1.0.0",
   "private": true,
-  "description": "Flawless real-time collaborative rich-text editor powered by Yjs, TipTap, and WebSockets",
+  "description": "Knit — Flawless real-time collaborative rich-text editor powered by Yjs, TipTap, and WebSockets",
   "scripts": {
     "install:all": "npm --prefix server install && npm --prefix client install",
     "dev:server": "npm --prefix server run dev",

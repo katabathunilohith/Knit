@@ -1,0 +1,276 @@
+/* Knit Cat Mascot Styles */
+
+.knit-cat-container {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  user-select: none;
+}
+
+/* Interactive speech bubble */
+.knit-cat-bubble {
+  position: absolute;
+  top: -38px;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 42, 133, 0.4);
+  color: #fce7f3;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(255, 42, 133, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  pointer-events: none;
+  animation: bubblePop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.knit-cat-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px 5px 0;
+  border-style: solid;
+  border-color: rgba(255, 42, 133, 0.4) transparent transparent transparent;
+}
+
+@keyframes bubblePop {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Cat Body Breathing */
+.cat-body-breathing {
+  transform-origin: 105px 165px;
+  animation: catBreathe 4s ease-in-out infinite alternate;
+}
+
+@keyframes catBreathe {
+  0% {
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    transform: scale(1.015, 1.025) translateY(-1px);
+  }
+}
+
+/* Cat Ear Twitch */
+.cat-ear-twitch {
+  transform-origin: 100px 48px;
+  animation: earTwitch 6s ease-in-out infinite;
+}
+
+@keyframes earTwitch {
+  0%, 88%, 96%, 100% {
+    transform: rotate(0deg);
+  }
+  90% {
+    transform: rotate(-3.5deg);
+  }
+  94% {
+    transform: rotate(2deg);
+  }
+}
+
+/* Cat Tail Wavy and Waving Animation */
+/* Multi-bone undulating wave */
+.cat-tail-root {
+  transform-origin: 140px 148px;
+  animation: tailWaveRoot 3.2s ease-in-out infinite alternate;
+}
+
+.cat-tail-mid {
+  transform-origin: 165px 148px;
+  animation: tailWaveMid 3.2s ease-in-out infinite alternate;
+}
+
+.cat-tail-tip {
+  transform-origin: 195px 160px;
+  animation: tailWaveTip 3.2s ease-in-out infinite alternate;
+}
+
+@keyframes tailWaveRoot {
+  0% {
+    transform: rotate(-3deg) translateY(0);
+  }
+  50% {
+    transform: rotate(4deg) translateY(-2px);
+  }
+  100% {
+    transform: rotate(-7deg) translateY(2px);
+  }
+}
+
+@keyframes tailWaveMid {
+  0% {
+    transform: rotate(5deg) scaleY(0.95);
+  }
+  50% {
+    transform: rotate(-6deg) scaleY(1.05);
+  }
+  100% {
+    transform: rotate(10deg) scaleY(0.92);
+  }
+}
+
+@keyframes tailWaveTip {
+  0% {
+    transform: rotate(-10deg) translateY(-2px);
+  }
+  40% {
+    transform: rotate(12deg) translateY(3px);
+  }
+  80% {
+    transform: rotate(-14deg) translateY(-4px);
+  }
+  100% {
+    transform: rotate(14deg) translateY(2px);
+  }
+}
+
+/* Faster waving when purring/hovering */
+.knit-cat-container:hover .cat-tail-root {
+  animation-duration: 1.6s;
+}
+.knit-cat-container:hover .cat-tail-mid {
+  animation-duration: 1.6s;
+}
+.knit-cat-container:hover .cat-tail-tip {
+  animation-duration: 1.6s;
+}
+
+/* Knitting Needles Animation */
+.knit-needle-left {
+  transform-origin: 88px 125px;
+  animation: knitLeft 0.85s ease-in-out infinite alternate;
+}
+
+.knit-needle-right {
+  transform-origin: 110px 125px;
+  animation: knitRight 0.85s ease-in-out infinite alternate;
+}
+
+@keyframes knitLeft {
+  0% {
+    transform: rotate(-12deg) translate(0, 0);
+  }
+  50% {
+    transform: rotate(-2deg) translate(2px, -3px);
+  }
+  100% {
+    transform: rotate(-16deg) translate(-1px, 2px);
+  }
+}
+
+@keyframes knitRight {
+  0% {
+    transform: rotate(14deg) translate(0, 0);
+  }
+  50% {
+    transform: rotate(4deg) translate(-2px, -3px);
+  }
+  100% {
+    transform: rotate(18deg) translate(1px, 2px);
+  }
+}
+
+/* Faster knitting when hovered */
+.knit-cat-container:hover .knit-needle-left,
+.knit-cat-container:hover .knit-needle-right {
+  animation-duration: 0.45s;
+}
+
+/* Knitting yarn thread dynamic ripple */
+.knit-yarn-thread {
+  stroke-dasharray: 4, 3;
+  animation: yarnThreadFlow 1.5s linear infinite;
+}
+
+@keyframes yarnThreadFlow {
+  to {
+    stroke-dashoffset: -14;
+  }
+}
+
+/* Knitting loop pulse */
+.knit-loop-pulse {
+  transform-origin: 98px 128px;
+  animation: stitchLoop 0.85s ease-in-out infinite alternate;
+}
+
+@keyframes stitchLoop {
+  0% {
+    transform: scale(0.92) rotate(-3deg);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(1.1) rotate(3deg);
+    opacity: 1;
+  }
+}
+
+/* Soft ground shadow pulse */
+.cat-ground-shadow {
+  transform-origin: 110px 175px;
+  animation: shadowBreathe 4s ease-in-out infinite alternate;
+}
+
+@keyframes shadowBreathe {
+  0% {
+    transform: scaleX(0.98);
+    opacity: 0.65;
+  }
+  100% {
+    transform: scaleX(1.05);
+    opacity: 0.85;
+  }
+}
+
+/* Tiny Purr Note Particle */
+@keyframes purrFloat {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.6);
+  }
+  40% {
+    opacity: 0.9;
+    transform: translate(6px, -14px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(12px, -28px) scale(0.7);
+  }
+}
+
+.purr-particle-1 {
+  position: absolute;
+  top: 15px;
+  right: 60px;
+  animation: purrFloat 2.8s ease-in-out infinite;
+  color: #ff77b9;
+  font-size: 0.75rem;
+  pointer-events: none;
+}
+
+.purr-particle-2 {
+  position: absolute;
+  top: 8px;
+  right: 42px;
+  animation: purrFloat 2.8s ease-in-out infinite 1.4s;
+  color: #fda4af;
+  font-size: 0.7rem;
+  pointer-events: none;
+}

@@ -20,13 +20,13 @@ export const ChaosToggle: React.FC<ChaosToggleProps> = ({
   const handleToggle = () => {
     if (isPartitioned) {
       onHealPartition();
-      // Trigger confetti celebration on partition healing
+      // Trigger confetti celebration on partition healing with Knit brand palette
       try {
         confetti({
-          particleCount: 80,
-          spread: 70,
+          particleCount: 90,
+          spread: 80,
           origin: { y: 0.2 },
-          colors: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'],
+          colors: ['#ff2a85', '#8b5cf6', '#ff6b35', '#00e5ff', '#10b981'],
         });
       } catch {
         // Fallback
@@ -51,13 +51,15 @@ export const ChaosToggle: React.FC<ChaosToggleProps> = ({
           padding: '6px 14px',
           borderRadius: '9999px',
           fontSize: '0.8rem',
-          fontWeight: 600,
-          border: isPartitioned ? '1px solid #ef4444' : '1px solid rgba(16, 185, 129, 0.4)',
+          fontWeight: 700,
+          letterSpacing: '0.01em',
+          border: isPartitioned ? '1px solid #ef4444' : '1px solid rgba(16, 185, 129, 0.45)',
           background: isPartitioned
-            ? 'linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(185, 28, 28, 0.3))'
-            : 'linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.25))',
+            ? 'linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(185, 28, 28, 0.35))'
+            : 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.3))',
           color: isPartitioned ? '#fca5a5' : '#6ee7b7',
           cursor: 'pointer',
+          boxShadow: isPartitioned ? '0 0 14px rgba(239, 68, 68, 0.3)' : '0 0 14px rgba(16, 185, 129, 0.25)',
           transition: 'all 0.25s ease',
         }}
         title={
@@ -84,27 +86,28 @@ export const ChaosToggle: React.FC<ChaosToggleProps> = ({
         <div
           style={{
             position: 'fixed',
-            top: '72px',
+            top: '75px',
             left: '50%',
             transform: 'translateX(-50%)',
-            background: 'linear-gradient(135deg, #065f46, #047857)',
+            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.95), rgba(5, 150, 105, 0.95))',
             color: '#ecfdf5',
-            padding: '10px 20px',
-            borderRadius: '12px',
-            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
-            border: '1px solid rgba(52, 211, 153, 0.4)',
-            fontSize: '0.85rem',
+            padding: '12px 22px',
+            borderRadius: '14px',
+            boxShadow: '0 15px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(16, 185, 129, 0.4)',
+            border: '1px solid rgba(52, 211, 153, 0.5)',
+            fontSize: '0.86rem',
             fontWeight: 600,
             display: 'flex',
             alignItems: 'center',
             gap: '10px',
             zIndex: 100,
             animation: 'cursorFadeIn 0.3s ease-out',
+            backdropFilter: 'blur(16px)',
           }}
         >
-          <Zap size={18} color="#34d399" />
+          <Zap size={18} color="#ffffff" />
           <span>
-            ⚡ <strong>Partition Healed!</strong> Yjs merged local & remote edits conflict-free
+            🧶 <strong>Knit Partition Healed!</strong> Yjs seamlessly woven local & remote edits conflict-free
             using character-level interleaving!
           </span>
         </div>

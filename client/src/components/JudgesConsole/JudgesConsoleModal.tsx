@@ -113,17 +113,18 @@ export const JudgesConsoleModal: React.FC<JudgesConsoleModalProps> = ({
                 width: 32,
                 height: 32,
                 borderRadius: '8px',
-                background: 'linear-gradient(135deg, #8b5cf6, #6366f1)',
+                background: 'linear-gradient(135deg, #ff2a85, #8b5cf6)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                boxShadow: '0 0 12px rgba(255, 42, 133, 0.4)',
               }}
             >
               <Cpu size={18} color="#ffffff" />
             </div>
             <div>
               <div style={{ fontSize: '1rem', fontWeight: 800, color: '#f8fafc', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span>The Judge's Console — CRDT Deep Inspector</span>
+                <span>🧶 Knit Judge's Console — CRDT Deep Inspector</span>
                 <span
                   style={{
                     fontSize: '0.7rem',

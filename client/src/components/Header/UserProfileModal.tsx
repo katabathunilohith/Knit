@@ -34,8 +34,9 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        backdropFilter: 'blur(8px)',
+        backgroundColor: 'rgba(5, 6, 10, 0.75)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -47,29 +48,33 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
         className="glass-panel"
         style={{
           width: '100%',
-          maxWidth: '420px',
-          padding: '1.75rem',
-          backgroundColor: '#111722',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8)',
-          border: '1px solid rgba(255, 255, 255, 0.12)',
+          maxWidth: '430px',
+          padding: '2rem',
+          backgroundColor: 'rgba(13, 17, 26, 0.95)',
+          boxShadow: '0 30px 60px -12px rgba(0, 0, 0, 0.9), 0 0 30px rgba(255, 42, 133, 0.15)',
+          border: '1px solid rgba(255, 42, 133, 0.3)',
+          borderRadius: '16px',
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
-          <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#f8fafc' }}>
-            Collaborator Profile
-          </h3>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '1.25rem' }}>🧶</span>
+            <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#f8fafc', letterSpacing: '-0.02em' }}>
+              Collaborator Profile
+            </h3>
+          </div>
           <button
             type="button"
             onClick={onClose}
-            style={{ background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer' }}
+            style={{ background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: '4px' }}
           >
             <X size={18} />
           </button>
         </div>
 
         <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '1.25rem' }}>
+          <div style={{ marginBottom: '1.4rem' }}>
             <label
               htmlFor="collab-name-input"
               style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#94a3b8', marginBottom: '6px' }}
@@ -83,25 +88,28 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
               onChange={(e) => setName(e.target.value)}
               style={{
                 width: '100%',
-                padding: '0.6rem 0.85rem',
-                backgroundColor: '#0a0d14',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
+                padding: '0.65rem 0.95rem',
+                backgroundColor: '#07090e',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
                 borderRadius: '8px',
                 color: '#f8fafc',
-                fontSize: '0.9rem',
+                fontSize: '0.92rem',
                 outline: 'none',
+                transition: 'border-color 0.15s ease',
               }}
+              onFocus={(e) => (e.target.style.borderColor = '#ff2a85')}
+              onBlur={(e) => (e.target.style.borderColor = 'rgba(255, 255, 255, 0.12)')}
               required
             />
           </div>
 
-          <div style={{ marginBottom: '1.5rem' }}>
+          <div style={{ marginBottom: '1.75rem' }}>
             <label
               style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: '#94a3b8', marginBottom: '8px' }}
             >
               Caret & Presence Color
             </label>
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: '9px', flexWrap: 'wrap' }}>
               {COLLAB_COLORS.map((c) => (
                 <button
                   key={c}
@@ -112,13 +120,13 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                     height: 32,
                     borderRadius: '50%',
                     backgroundColor: c,
-                    border: selectedColor === c ? '2px solid white' : '1px solid rgba(0,0,0,0.3)',
+                    border: selectedColor === c ? '2.5px solid white' : '1px solid rgba(0,0,0,0.3)',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    boxShadow: selectedColor === c ? `0 0 10px ${c}` : 'none',
-                    transform: selectedColor === c ? 'scale(1.1)' : 'scale(1)',
+                    boxShadow: selectedColor === c ? `0 0 12px ${c}` : 'none',
+                    transform: selectedColor === c ? 'scale(1.12)' : 'scale(1)',
                     transition: 'all 0.15s ease',
                   }}
                 >
@@ -128,7 +136,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
             </div>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
             <button
               type="button"
               onClick={onClose}
