@@ -37,11 +37,114 @@ export class MetadataStore {
                 updatedAt: Date.now(),
                 lastCompactedAt: Date.now(),
                 version: 1,
+                inviteCode: Math.random().toString(36).substring(2, 10),
+                collaborators: [],
             };
             this.cache.set(docName, meta);
             await this.save();
         }
+        if (!meta.inviteCode) {
+            meta.inviteCode = Math.random().toString(36).substring(2, 10);
+            await this.save();
+        }
         return meta;
+    }
+    async listDocuments(userId) {
+        if (!this.initialized)
+            await this.init();
+        // Seed an initial document if storage is completely empty
+        if (this.cache.size === 0) {
+            await this.getMetadata('knit-demo');
+        }
+        const allDocs = Array.from(this.cache.values());
+        if (!userId) {
+            return allDocs.sort((a, b) => b.updatedAt - a.updatedAt);
+        }
+        // Filter documents where user is owner, collaborator, or doc is public/demo
+        return allDocs.filter((doc) => {
+            if (!doc.ownerId || doc.id === 'knit-demo' || doc.id === 'default')
+                return true;
+            if (doc.ownerId === userId)
+                return true;
+            if (doc.collaborators?.some((c) => c.userId === userId))
+                return true;
+            return false;
+        }).sort((a, b) => b.updatedAt - a.updatedAt);
+    }
+    async createDocument(params) {
+        if (!this.initialized)
+            await this.init();
+        const id = 'knit-' + Math.random().toString(36).substring(2, 9);
+        const inviteCode = Math.random().toString(36).substring(2, 10);
+        const now = Date.now();
+        const newDoc = {
+            id,
+            title: params.title || 'Untitled Knit Document',
+            createdAt: now,
+            updatedAt: now,
+            lastCompactedAt: now,
+            version: 1,
+            ownerId: params.ownerId,
+            ownerName: params.ownerName || 'Verified User',
+            ownerEmail: params.ownerEmail,
+            ownerAvatar: params.ownerAvatar,
+            inviteCode,
+            collaborators: [],
+        };
+        this.cache.set(id, newDoc);
+        await this.save();
+        return newDoc;
+    }
+    async getByInviteCode(code) {
+        if (!this.initialized)
+            await this.init();
+        for (const doc of this.cache.values()) {
+            if (doc.inviteCode === code)
+                return doc;
+        }
+        return null;
+    }
+    async addCollaborator(docId, collaborator) {
+        const doc = await this.getMetadata(docId);
+        if (!doc)
+            return null;
+        if (!doc.collaborators)
+            doc.collaborators = [];
+        // Check if user is already owner or collaborator
+        if (doc.ownerId === collaborator.userId)
+            return doc;
+        const existingIndex = doc.collaborators.findIndex((c) => c.userId === collaborator.userId);
+        if (existingIndex >= 0) {
+            doc.collaborators[existingIndex].name = collaborator.name;
+            doc.collaborators[existingIndex].email = collaborator.email;
+        }
+        else {
+            doc.collaborators.push({
+                userId: collaborator.userId,
+                name: collaborator.name,
+                email: collaborator.email,
+                avatar: collaborator.avatar,
+                role: collaborator.role || 'editor',
+                addedAt: Date.now(),
+            });
+        }
+        doc.updatedAt = Date.now();
+        await this.save();
+        return doc;
+    }
+    async deleteDocument(docId, userId) {
+        if (!this.initialized)
+            await this.init();
+        const doc = this.cache.get(docId);
+        if (!doc)
+            return false;
+        // If userId provided and doc has owner, enforce owner permission
+        if (userId && doc.ownerId && doc.ownerId !== userId) {
+            return false;
+        }
+        this.cache.delete(docId);
+        await this.save();
+        return true;
     }
     async updateTitle(docName, title) {
         const meta = await this.getMetadata(docName);

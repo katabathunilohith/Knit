@@ -5,6 +5,42 @@
     "createdAt": 1789650918576,
     "updatedAt": 1789650918576,
     "lastCompactedAt": 1789650918576,
-    "version": 2
+    "version": 2,
+    "inviteCode": "7vv6789f"
+  },
+  "knit-rbtmuwa": {
+    "id": "knit-rbtmuwa",
+    "title": "Distributed Consensus Spec",
+    "createdAt": 1789669391846,
+    "updatedAt": 1789669402406,
+    "lastCompactedAt": 1789669391846,
+    "version": 1,
+    "ownerId": "user_alex",
+    "ownerName": "Dr. Alex Carter",
+    "ownerEmail": "alex.carter@mit.edu",
+    "inviteCode": "d4p6gd37",
+    "collaborators": [
+      {
+        "userId": "user_maya",
+        "name": "Maya Chen",
+        "email": "maya@knit.io",
+        "role": "editor",
+        "addedAt": 1789669402406
+      }
+    ]
+  },
+  "knit-k87tefh": {
+    "id": "knit-k87tefh",
+    "title": "test 1",
+    "createdAt": 1789671011638,
+    "updatedAt": 1789671011638,
+    "lastCompactedAt": 1789671011638,
+    "version": 1,
+    "ownerId": "user_alex",
+    "ownerName": "Dr. Alex Carter",
+    "ownerEmail": "alex.carter@mit.edu",
+    "ownerAvatar": "⚡",
+    "inviteCode": "trjorrx7",
+    "collaborators": []
   }
 }

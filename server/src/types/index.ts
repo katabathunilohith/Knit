@@ -28,6 +28,15 @@ export interface CompactionResult {
   timestamp: number;
 }
 
+export interface CollaboratorInfo {
+  userId: string;
+  name: string;
+  email: string;
+  avatar?: string;
+  role: 'owner' | 'editor' | 'viewer';
+  addedAt: number;
+}
+
 export interface DocumentMetadata {
   id: string;
   title: string;
@@ -35,4 +44,10 @@ export interface DocumentMetadata {
   updatedAt: number;
   lastCompactedAt: number;
   version: number;
+  ownerId?: string;
+  ownerName?: string;
+  ownerEmail?: string;
+  ownerAvatar?: string;
+  inviteCode: string;
+  collaborators?: CollaboratorInfo[];
 }

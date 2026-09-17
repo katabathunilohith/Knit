@@ -56,11 +56,39 @@ app.post('/api/docs/:id/compact', async (req, res) => {
   }
 });
 
-// Metadata endpoints
+// Document Metadata & List endpoints
+app.get('/api/docs', async (req, res) => {
+  const userId = req.query.userId as string | undefined;
+  const docs = await metadataStore.listDocuments(userId);
+  return res.json(docs);
+});
+
+app.post('/api/docs', async (req, res) => {
+  const { title, ownerId, ownerName, ownerEmail, ownerAvatar } = req.body;
+  const newDoc = await metadataStore.createDocument({
+    title: title || 'Untitled Knit Document',
+    ownerId,
+    ownerName,
+    ownerEmail,
+    ownerAvatar,
+  });
+  return res.status(201).json(newDoc);
+});
+
 app.get('/api/docs/:id/meta', async (req, res) => {
   const docName = req.params.id || 'default';
   const meta = await metadataStore.getMetadata(docName);
   return res.json(meta);
+});
+
+app.delete('/api/docs/:id', async (req, res) => {
+  const docName = req.params.id;
+  const userId = req.query.userId as string | undefined;
+  const success = await metadataStore.deleteDocument(docName, userId);
+  if (!success) {
+    return res.status(403).json({ error: 'Cannot delete document: unauthorized or document not found' });
+  }
+  return res.json({ success: true, message: 'Document deleted' });
 });
 
 app.put('/api/docs/:id/title', async (req, res) => {
@@ -71,6 +99,36 @@ app.put('/api/docs/:id/title', async (req, res) => {
   }
   const meta = await metadataStore.updateTitle(docName, title);
   return res.json(meta);
+});
+
+// Invite resolution & joining
+app.get('/api/invites/:code', async (req, res) => {
+  const { code } = req.params;
+  const doc = await metadataStore.getByInviteCode(code);
+  if (!doc) {
+    return res.status(404).json({ error: 'Invite link is invalid or expired' });
+  }
+  return res.json(doc);
+});
+
+app.post('/api/invites/:code/accept', async (req, res) => {
+  const { code } = req.params;
+  const { userId, name, email, avatar, role } = req.body;
+  const doc = await metadataStore.getByInviteCode(code);
+  if (!doc) {
+    return res.status(404).json({ error: 'Invite link is invalid or expired' });
+  }
+  if (!userId || !name) {
+    return res.status(400).json({ error: 'User info required to accept invite' });
+  }
+  const updatedDoc = await metadataStore.addCollaborator(doc.id, {
+    userId,
+    name,
+    email: email || '',
+    avatar,
+    role: role || 'editor',
+  });
+  return res.json(updatedDoc);
 });
 
 // Create HTTP and WebSocket servers

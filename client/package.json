@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^5.61.9",
     "@tiptap/extension-collaboration": "^2.26.2",
     "@tiptap/extension-collaboration-cursor": "^2.26.2",
     "@tiptap/pm": "^2.26.2",
@@ -19,6 +20,7 @@
     "lucide-react": "^1.47.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-router-dom": "^7.18.4",
     "y-indexeddb": "^9.0.12",
     "y-protocols": "^1.0.6",
     "y-websocket": "^2.0.4",
